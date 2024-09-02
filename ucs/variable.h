@@ -1,15 +1,7 @@
-/*
- * variable.h
- *
- *  Created on: Feb 5, 2015
- *      Author: nbingham
- */
+#pragma once
 
 #include <common/standard.h>
 #include "type.h"
-
-#ifndef ucs_variable_h
-#define ucs_variable_h
 
 namespace ucs
 {
@@ -36,6 +28,7 @@ bool operator!=(const instance &i0, const instance &i1);
 struct variable
 {
 	variable();
+	variable(string name, int region = 0);
 	~variable();
 
 	vector<instance> name;
@@ -82,4 +75,3 @@ struct variable_set
 
 }
 
-#endif

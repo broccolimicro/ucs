@@ -73,6 +73,11 @@ variable::variable()
 	region = 0;
 }
 
+variable::variable(string name, int region) {
+	this->name.push_back(instance(name, vector<int>()));
+	this->region = region;
+}
+
 variable::~variable()
 {
 
