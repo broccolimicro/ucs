@@ -34,6 +34,8 @@ struct variable
 	vector<instance> name;
 	int region;
 
+	bool isnode() const;
+
 	string to_string() const;
 };
 

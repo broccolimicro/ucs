@@ -83,6 +83,18 @@ variable::~variable()
 
 }
 
+bool variable::isnode() const {
+	if (name.size() != 1 or name[0].name.size() <= 1 or name[0].name[0] != '_') {
+		return false;
+	}
+	for (auto c = name[0].name.begin()+1; c != name[0].name.end(); c++) {
+		if (*c < '0' or *c > '9') {
+			return false;
+		}
+	}
+	return true;
+}
+
 string variable::to_string() const
 {
 	string result = "";
