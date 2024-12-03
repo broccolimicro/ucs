@@ -177,6 +177,8 @@ int variable_set::find(variable v)
 				return i;
 		}
 
+	// We're trying to look up a net that exists, but we haven't yet defined
+	// the isochronic region for this end of the wire.
 	if (exists)
 		return define(v);
 
