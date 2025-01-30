@@ -71,14 +71,17 @@ void mapping::apply(const mapping &m) {
 }
 
 void mapping::set(int from, int to) {
+	isIdentity = false;
 	if (from >= (int)nets.size()) {
 		nets.resize(from+1, -1);
 	}
-	nets[from] = to;
-	isIdentity = false;
+	if (from >= 0) {
+		nets[from] = to;
+	}
 }
 
 void mapping::set(vector<int> from, int to) {
+	isIdentity = false;
 	int m = (int)nets.size()-1;
 	for (int i = 0; i < (int)from.size(); i++) {
 		if (from[i] > m) {
@@ -87,9 +90,10 @@ void mapping::set(vector<int> from, int to) {
 	}
 	nets.resize(m+1,-1);
 	for (int i = 0; i < (int)from.size(); i++) {
-		nets[from[i]] = to;
+		if (from[i] >= 0) {
+			nets[from[i]] = to;
+		}
 	}
-	isIdentity = false;
 }
 
 bool mapping::has(int from) const {
