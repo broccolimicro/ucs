@@ -7,7 +7,7 @@ using namespace std;
 namespace ucs {
 
 struct mapping {
-	mapping();
+	mapping(bool ident=false);
 	mapping(int num);
 	mapping(vector<int> nets);
 	~mapping();
@@ -24,6 +24,11 @@ struct mapping {
 	void set(int from, int to);
 	void set(vector<int> from, int to);
 	bool has(int from) const;
+
+	int size() const;
+
+	ucs::mapping reverse() const;
+	void reverse_inplace();
 
 	void print() const;
 };

@@ -6,13 +6,12 @@ using namespace std;
 
 namespace ucs {
 
-mapping::mapping() {
-	isIdentity = true;
+mapping::mapping(bool ident) {
+	isIdentity = ident;
 }
 
 mapping::mapping(int num) {
 	identity(num);
-	isIdentity = false;
 }
 
 mapping::mapping(vector<int> nets) {
@@ -49,6 +48,7 @@ int mapping::map(int net) const {
 
 void mapping::identity(int num) {
 	nets.clear();
+	isIdentity = false;
 
 	nets.reserve(num);
 	for (int i = 0; i < num; i++) {
@@ -64,14 +64,14 @@ void mapping::apply(const mapping &m) {
 	vector<int> updated;
 	updated.reserve(m.nets.size());
 	for (int i = 0; i < (int)m.nets.size(); i++) {
-		updated.push_back(map(m.map(i)));
+		updated.push_back(nets[m.nets[i]]);
 	}
 	nets = updated;
 	isIdentity = isIdentity and m.isIdentity;
 }
 
 void mapping::set(int from, int to) {
-	if (from >= nets.size()) {
+	if (from >= (int)nets.size()) {
 		nets.resize(from+1, -1);
 	}
 	nets[from] = to;
@@ -93,7 +93,32 @@ void mapping::set(vector<int> from, int to) {
 }
 
 bool mapping::has(int from) const {
-	return from >= 0 and from < (int)nets.size() and nets[from] >= 0;
+	return isIdentity or (from >= 0 and from < (int)nets.size() and nets[from] >= 0);
+}
+
+int mapping::size() const {
+	return (int)nets.size();
+}
+
+ucs::mapping mapping::reverse() const {
+	ucs::mapping result(isIdentity);
+	int hi = 0;
+	for (int i = 0; i < (int)nets.size(); i++) {
+		if (nets[i] > hi) {
+			hi = nets[i];
+		}
+	}
+	result.nets.resize(hi+1, -1);
+	for (int i = 0; i < (int)nets.size(); i++) {
+		if (nets[i] >= 0) {
+			result.nets[nets[i]] = i;
+		}
+	}
+	return result;
+}
+
+void mapping::reverse_inplace() {
+	nets = reverse().nets;
 }
 
 void mapping::print() const {
